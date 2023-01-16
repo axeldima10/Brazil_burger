@@ -1,0 +1,145 @@
+{% extends "admin/liste.html.twig" %}
+
+{% block title %}
+    les paiements
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+
+    {% block liste_head %}
+        liste des paiements
+    {% endblock %}
+
+    {% block liste_add %}{% endblock %}
+
+    {% block liste_body %}
+        
+        <thead>
+            <tr>
+                <th>Client</th>
+                <th>Montant</th>
+                <th>repas</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Client</th>
+                <th>Montant</th>
+                <th>repas</th>
+                <th>Action</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            {% for p in paiements %}
+                <tr id="p{{p.id}}">
+                    <td>{{p.client.nomComplet}}</td>
+                    <td>{{p.montant}}</td>
+                    <td>
+                        {% for panier in p.commande.paniers %}
+                            {{panier.repas.libelle}}<br>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% if type == "notPaid" %}
+                            <button class="btn btn-primary mr-3 ml-3 del" data-id="{{p.id}}" data-path="{{path("encaisser",{id:p.id})}}">encaisser la paie</button>
+                            <a class="btn btn-primary mr-3 ml-3" href="{{path("del_paiement",{id:p.id})}}">Annuler achat</a>
+
+                            <button class="btn btn-primary dropdown-item" href="#" data-toggle="modal" data-target="#facture">
+                                <i class="fas fa-print"></i>
+                            </button>
+                        {% else %}
+
+                        {% endif %}
+                    </td>
+                </tr>
+                <div class="modal fade" id="facture" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">facture de commande</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body border" id="printTable">
+                                <p style="margin-left:50px"><u>brazzil burger</u></p>
+                                <p class="float-right">date:{{ 'now' | date('Y-m-d') }}</p>
+                                <h6>Facture numero {{p.id}}</h6>
+                                <div>
+                                    <div>
+                                        <u>
+                                            <span>produit</span>
+                                            <span style="margin-left:200px">prix</span>
+                                        </u>
+                                    </div>
+                                </div>
+                                <div>
+                                {% for panier in p.commande.paniers %}
+                                    <div>
+                                        <span>{{panier.repas.libelle}}</span>
+                                        <span style="margin-left:200px">{{panier.repas.prix}} fcfa</span>
+                                    </div>
+                                {% endfor %}
+                                    <div>
+                                        <span></span>
+                                        <span style="margin-left:180px">montant total:  {{p.montant}} fcfa</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="modal-footer printable">
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">retour</button>
+                                <button class="btn btn-primary" onclick="printData" type="button">imprimer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">la liste des paiements est vide</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+  
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        function printData()
+        {
+            var divToPrint=document.getElementById('printTable');
+            var newWin=window.open('','Print-Window');
+            newWin.document.open();
+            newWin.document.write('<html><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');
+            newWin.document.close();
+            setTimeout(function(){newWin.close();},10);
+        }
+
+        $(function(){
+            $('.del').on('click', function(){
+                const id=$(this).data('id')
+                const path =$(this).data('path')
+                const toHide= document.getElementById("p"+id)
+                $.ajax({
+                    url: path,
+                    type: 'GET',
+                    async: true,
+                    success: function(data){
+                    },
+                    error: function(xhr, status, error){
+                        toHide.style.display="none"
+                        alert("action effectué")
+                    }
+                });
+            });
+            
+        })
+    </script>
+{% endblock %}

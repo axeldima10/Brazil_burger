@@ -1,0 +1,262 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}commandes{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- Google Fonts
+		============================================ -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+ 
+	<!-- nalika Icon CSS
+		============================================ -->
+    <link rel="stylesheet" href="com/css/nalika-icon.css">
+    <!-- owl.carousel CSS
+		============================================ -->
+    <link rel="stylesheet" href=com/"css/owl.carousel.css">
+    <link rel="stylesheet" href=com/"css/owl.theme.css">
+    <link rel="stylesheet" href=com/"css/owl.transitions.css">
+    <!-- animate CSS
+		============================================ -->
+    <link rel="stylesheet" href="com/css/animate.css">
+    <!-- normalize CSS
+		============================================ -->
+    <link rel="stylesheet" href="com/css/normalize.css">
+    <!-- meanmenu icon CSS
+		============================================ -->
+    <link rel="stylesheet" href="com/css/meanmenu.min.css">
+    <!-- main CSS
+		============================================ -->
+    <link rel="stylesheet" href="com/css/main.css">
+    <!-- morrisjs CSS
+		============================================ -->
+    <link rel="stylesheet" href="com/css/morrisjs/morris.css">
+    <!-- mCustomScrollbar CSS
+		============================================ -->
+    <link rel="stylesheet" href="com/css/scrollbar/jquery.mCustomScrollbar.min.css">
+    <!-- metisMenu CSS
+		============================================ -->
+    <link rel="stylesheet" href="com/css/metisMenu/metisMenu.min.css">
+    <link rel="stylesheet" href="com/css/metisMenu/metisMenu-vertical.css">
+
+    <!-- style CSS
+		============================================ -->
+    <link rel="stylesheet" href="com/style.css">
+    <!-- responsive CSS
+		============================================ -->
+    <link rel="stylesheet" href="com/css/responsive.css">
+    <!-- modernizr JS
+		============================================ -->
+    <script src="com/js/vendor/modernizr-2.8.3.min.js"></script>
+{% endblock %}
+
+{% block body %}
+    <!-- Start All Pages -->
+	<div class="all-page-title page-breadcrumb">
+		<div class="container text-center">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1>commandes</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End All Pages -->
+<div class="product-cart-area mg-b-30 mt-5">
+    <div class="container-fluid">
+        <div class="row">
+        {% for message in app.flashes('notification') %}
+
+          <div class="alert alert-info alert-dismissible fade show ml-2">
+
+            {{ message }}
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+          </div>
+
+        {% endfor %}
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="product-cart-inner">
+                    <div id="">
+
+                    {% if final is defined %}
+
+                        <h3 class="text-center mt-5 mb-5">Confirmation</h3>
+                        <section class="mb-5 mt-5 text-center">
+                            <div class="product-confarmation">
+                                <h2>commande numero {{numero}} en cours...</h2>
+                                <p>rapprocher vous du comptoir pour effectuer le paiement. Montant: {{ total is defined ? total : '' }}</p>
+                                <p>ou</p>
+                                <p>payer par orange money numéro: +221 78 585 89 89</p>
+                                <p>ou par wave numéro: +221 77 897 78 87</p>
+                            </div>
+                        </section>
+                        
+                    {% else %}
+
+                        <h3 class="text-center text-danger">Panier de commande</h3>
+                        <section>
+                            <h3 class="product-cart-dn">Panier</h3>
+                            <div class="product-list-cart">
+                                <div class="product-status-wrap border-pdt-ct">
+                                    <table>
+                                        <tr>
+                                            <th>produit</th>
+                                            <th>Quantité</th>
+                                            <th>Prix</th>
+                                            <th>Action</th>
+                                        </tr>
+
+                                        {% set newArray = [] %}
+
+                                    {% if commande is null %}
+                                        <tr>
+                                            <td colspan="4" clas="text-center">aucune commande</td>
+                                        </tr>
+                                    {% else %}
+
+                                        {% for panier in commande.paniers %}
+                                            {% set c = 0 %}
+                                            {% for p in commande.paniers %}
+                                                {% if panier.repas.libelle == p.repas.libelle %}
+                                                  {% set c = c + 1 %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if panier.repas.libelle not in newArray %}
+                                                <tr>
+                                                    <td>
+                                                        <h2 class="text-primary">{{panier.repas.libelle}}</h2>
+                                                        <p>{{panier.repas.description}}</p>
+                                                    </td>
+                                                    <td>
+                                                        {{ c }}
+                                                    </td>
+                                                    <td>
+                                                        {{ c * panier.repas.prix  }}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{path('update',{'type':'decrease','id':panier.repas.getId1()})}}" data-toggle="tooltip" title="remove" class="pd-setting-ed btn btn-warning">-</a>
+                                                        <a href="{{path('update',{'type':'increase','id':panier.repas.getId1()})}}" data-toggle="tooltip" title="add" class="pd-setting-ed btn btn-success">+</a>
+                                                    </td>
+                                                </tr>
+                                                {% set newArray = newArray|merge([panier.repas.libelle]) %}
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        <tr>
+                                            <td>
+                                                 
+                                            </td> 
+                                            <td>
+                                                Total:
+                                            </td>
+                                            <td>
+                                                {{commande.total}} FCFA
+                                            </td>
+                                            <td>
+                                                <a href="{{path('annuler_com')}}" class="btn btn-danger">annuler commande</a>
+                                            </td>
+                                       </tr>
+                                       {% endif %}
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+
+                        {% if app.session.get('client') is null %}
+                            <h3 class="text-center text-danger mt-5">Identification</h3>
+                            <section>
+                                <h3 class="product-cart-dn">Shopping</h3>
+                                <div class="product-delivary" style="color:red">
+                                    {{form_start(form)}}
+                                    {{form_widget(form.email, { 'attr': {'class': 'invisible'}})}}
+                                    {{form_widget(form.password, { 'attr': {'class': 'invisible'}})}}
+                                    {{form_row(form.nomComplet)}}
+                                    {{form_row(form.telephone)}}
+                                    {{form_end(form)}}
+                                </div>
+                            </section>
+                        {% else %}
+                            <h3 class="text-center text-danger mt-5"><u>Finalisation</u></h3>
+                            <section>
+                                <h3 class="product-cart-dn">Shopping</h3>
+                                <div class="payment-details mt-5">
+                                <h2 class="text-center text-primary">Ajouter compléments ?</h2>
+                                
+                                    <form method="post" action="{{path('finaliser')}}">
+                                        {% for com in complements %}
+                                            <input type="checkbox" value="{{com.getId1()}}" id="{{com.libelle}}" name="complement[]">
+                                            <p class="text-center"><label for="{{com.libelle}}">{{com.libelle}} ({{com.description}})</label></p>
+                                        {% endfor %}
+                                        <button type="submit" class="btn btn-primary float-right">valider achat</button>
+                                    </form>
+                                
+                                </div>
+                            </section> 
+                        {% endif %}
+
+                    {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+        <!-- jquery
+		============================================ -->
+    <script src="com/js/vendor/jquery-1.12.4.min.js"></script>
+  
+    <!-- wow JS
+		============================================ -->
+    <script src="com/js/wow.min.js"></script>
+    <!-- price-slider JS
+		============================================ -->
+    <script src="com/js/jquery-price-slider.js"></script>
+    <!-- meanmenu JS
+		============================================ -->
+    <script src="com/js/jquery.meanmenu.js"></script>
+    <!-- owl.carousel JS
+		============================================ -->
+    <script src="com/js/owl.carousel.min.js"></script>
+    <!-- sticky JS
+		============================================ -->
+    <script src="com/js/jquery.sticky.js"></script>
+    <!-- scrollUp JS
+		============================================ -->
+    <script src="com/js/jquery.scrollUp.min.js"></script>
+    <!-- mCustomScrollbar JS
+		============================================ -->
+    <script src="com/js/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="com/js/scrollbar/mCustomScrollbar-active.js"></script>
+    <!-- metisMenu JS
+		============================================ -->
+    <script src="com/js/metisMenu/metisMenu.min.js"></script>
+    <script src="com/js/metisMenu/metisMenu-active.js"></script>
+    <!-- morrisjs JS
+		============================================ -->
+    <script src="com/js/sparkline/jquery.sparkline.min.js"></script>
+    <script src="com/js/sparkline/jquery.charts-sparkline.js"></script>
+    <!-- tab JS
+		============================================ -->
+    <script src="com/js/tab.js"></script>
+    <!-- wizard JS
+		============================================ -->
+    <script src="com/js/wizard/jquery.steps.js"></script>
+    <script src="com/js/wizard/steps-active.js"></script>
+    <!-- plugins JS
+		============================================ -->
+    <script src="com/js/plugins.js"></script>
+    <!-- main JS
+		============================================ -->
+    <script src="com/js/main.js"></script>
+{% endblock %}

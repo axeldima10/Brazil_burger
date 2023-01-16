@@ -1,0 +1,25 @@
+{% extends "base.admin.html.twig" %}
+
+{% block title %}
+    gérer profil
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+
+{% block body %}
+    <div class="container mt-5 mb-5">
+        <h2 class="text-center mt-5 mb-5">
+            Modification de profil
+        </h2>
+        {{form(form)}}
+        <a class="btn btn-danger col-sm-2 offset-sm-10 mb-5" href="{{ path('admin')}}">annuler</a>
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

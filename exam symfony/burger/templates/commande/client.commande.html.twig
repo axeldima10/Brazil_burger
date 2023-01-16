@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}vos commandes{% endblock %}
+
+{% block body %}
+
+<!-- Start All Pages -->
+<div class="all-page-title page-breadcrumb">
+	<div class="container text-center">
+		<div class="row">
+			<div class="col-lg-12">
+				<h1>voir vos commandes</h1>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- End All Pages -->
+
+
+<div class="container text-center">
+    
+        <section class="mt-5 mb-5">
+            <h3 class="product-cart-dn mb-4">Panier de commande validés</h3>
+            <div class="product-list-cart">
+                <div class="product-status-wrap border-pdt-ct">
+                {% for commande in commandes %}
+                    <table class="table mt-2 mb-5">
+                        <tr>
+                            <th colspan="3">commande numero {{ commande.id }}</th>
+                        </tr>
+
+                        {% set newArray = [] %}
+
+                        {% for panier in commande.paniers %}
+                            {% set c = 0 %}
+                            {% for p in commande.paniers %}
+                                {% if panier.repas.libelle == p.repas.libelle %}
+                                    {% set c = c + 1 %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if panier.repas.libelle not in newArray %}
+                                <tr>
+                                    <td>
+                                        <h2 class="text-primary">{{panier.repas.libelle}}</h2>
+                                        <p>{{panier.repas.description}}</p>
+                                    </td>
+                                    <td>
+                                        {{ c }}
+                                    </td>
+                                    <td>
+                                        {{ c * panier.repas.prix  }}
+                                    </td>
+                                </tr>
+                                {% set newArray = newArray|merge([panier.repas.libelle]) %}
+                            {% endif %}
+                        {% endfor %}
+
+                        <tr>
+                            <td>
+                                    
+                            </td> 
+                            <td>
+                                Total:
+                            </td>
+                            <td>
+                                {{commande.total}} FCFA
+                            </td>
+                        </tr>
+                    </table>
+                {% else %}
+                    <p>Vous n'avez aucune commande</p>
+                {% endfor %}
+                </div>
+            </div>
+        </section>
+
+
+       
+</div>
+{% endblock %}

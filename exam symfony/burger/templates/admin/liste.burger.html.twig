@@ -1,0 +1,90 @@
+{% extends "admin/liste.html.twig" %}
+
+{% block title %}
+    liste des burgers
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+
+    {% block liste_head %}
+        liste des burgers
+    {% endblock %}
+
+    {% block liste_add %}
+        <a href="{{path("add_burger",{id:0})}}" class="btn btn-primary"><i class="fa fa-plus"></i> new burger</a>
+    {% endblock %}
+
+    {% block liste_body %}
+        
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prix</th>
+                <th>disponibilite</th>
+                <th>description</th>
+                <th>Image</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Nom</th>
+                <th>Prix</th>
+                <th>disponibilite</th>
+                <th>description</th>
+                <th>Image</th>
+                <th>Action</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            {% for burger in burgers %}
+                <tr id="b{{burger.getId1()}}" >
+                    <td>{{burger.libelle}}</td>
+                    <td>{{burger.prix}}</td>
+                    <td>{{burger.disponibilite ? "disponible" : "rupture de stock"}}</td>
+                    <td>{{burger.description}}</td>
+                    {% if burger.images.values is empty %}
+                        <td></td>
+                    {% else %}
+                        <td><img src="{{asset("images/burger/")}}{{burger.images.values[0].libelle}}" alt="" style="width:50px" /></td>
+                    {% endif %}
+                    <td><button class="btn btn-danger del" data-id="{{burger.getId1()}}" data-path="{{path("del_burger",{id:burger.getId1()})}}"><i class="fa fa-trash"></i></button>
+                        <a class="btn btn-warning" href="{{path("add_burger",{id:burger.getId1()})}}"><i class="fa fa-edit"></i></a></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">la liste des burger est vide</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+            
+  
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    $(function(){
+        $('.del').on('click', function(){
+            const id=$(this).data('id')
+            const deleted= document.getElementById("b"+id)
+            const path =$(this).data('path')
+            $.ajax({
+                url: path,
+                type: 'GET',
+                async: true,
+                success: function(data){
+                },
+                error: function(xhr, status, error){
+                    deleted.style.display="none"
+                    console.log(xhr, status, error)
+                }
+            });
+        });
+        
+    })
+    </script>
+{% endblock %}

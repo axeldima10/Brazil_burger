@@ -1,0 +1,90 @@
+{% extends "admin/liste.html.twig" %}
+
+{% block title %}
+    liste des complements
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+
+    {% block liste_head %}
+        liste des complements
+    {% endblock %}
+
+    {% block liste_add %}
+        <a href="{{path("add_complement",{id:0})}}" class="btn btn-primary"><i class="fa fa-plus"></i> new complement</a>
+    {% endblock %}
+
+    {% block liste_body %}
+        
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prix</th>
+                <th>disponibilite</th>
+                <th>description</th>
+                <th>image</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Nom</th>
+                <th>Prix</th>
+                <th>disponibilite</th>
+                <th>description</th>
+                <th>image</th>
+                <th>Action</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            {% for complement in complements %}
+                <tr id="c{{complement.getId1()}}" >
+                    <td>{{complement.libelle}}</td>
+                    <td>{{complement.prix}}</td>
+                    <td>{{complement.disponibilite ? "disponible" : "rupture de stock"}}</td>
+                    <td>{{complement.description}}</td>
+                    {% if complement.images.values is empty %}
+                        <td></td>
+                    {% else %}
+                        <td><img src="{{asset("images/complement/")}}{{complement.images.values[0].libelle}}" alt="" style="width:50px" /></td>
+                    {% endif %}
+                    <td><button class="btn btn-danger mr-3 ml-3 del" data-id="{{complement.getId1()}}" data-path="{{path("del_complement",{id:complement.getId1()})}}"><i class="fa fa-trash"></i></button>
+                        <a class="btn btn-warning" href="{{path("add_complement",{id:complement.getId1()})}}"><i class="fa fa-edit"></i></a></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">la liste des complements est vide</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+            
+  
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    $(function(){
+        $('.del').on('click', function(){
+            const id=$(this).data('id')
+            const deleted= document.getElementById("c"+id)
+            const path =$(this).data('path')
+            $.ajax({
+                url: path,
+                type: 'GET',
+                async: true,
+                success: function(data){
+                },
+                error: function(xhr, status, error){
+                    deleted.style.display="none"
+                    console.log(xhr, status, error)
+                }
+            });
+        });
+        
+    })
+    </script>
+{% endblock %}

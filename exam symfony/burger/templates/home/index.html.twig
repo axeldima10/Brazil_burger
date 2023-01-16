@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Acceuil{% endblock %}
+
+{% block body %}
+	<!-- Start slides -->
+	<div id="slides" class="cover-slides">
+		<ul class="slides-container">
+			<li class="text-left">
+				<img src="asset1/images/slider-01.jpg" alt="">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12">
+							<h1 class="m-b-20"><strong>Bienvenue à <br> Brasil Burger</strong></h1>
+							<p class="m-b-40">choisissez un menu parmi les offres  <br> 
+							<p><a class="btn btn-lg btn-circle btn-outline-new-white" href="{{path('menu')}}">Commander</a></p>
+						</div>
+					</div>
+				</div>
+			</li>
+			<li class="text-left">
+				<img src="asset1/images/slider-02.jpg" alt="">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12">
+							<h1 class="m-b-20"><strong>Bienvenue à <br> Brasil Burger</strong></h1>
+							<p class="m-b-40">Tester nos burgers <br> 
+							<p><a class="btn btn-lg btn-circle btn-outline-new-white" href="{{path('menu')}}">commander</a></p>
+						</div>
+					</div>
+				</div>
+			</li>
+			<li class="text-left">
+				<img src="asset1/images/slider-03.jpg" alt="">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12">
+							<h1 class="m-b-20"><strong>Bienvenue à <br> Brasil Burger</strong></h1>
+							<p class="m-b-40">Parcourir nos compléments  <br> 
+							<p><a class="btn btn-lg btn-circle btn-outline-new-white" href="{{path('menu')}}">commander</a></p>
+						</div>
+					</div>
+				</div>
+			</li>
+		</ul>
+		<div class="slides-navigation">
+			<a href="#" class="next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+			<a href="#" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+		</div>
+	</div>
+	<!-- End slides -->
+
+    <!-- Start About -->
+	<div class="about-section-box">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 col-md-6 col-sm-12 text-center">
+					<div class="inner-column">
+						<h1>Bienvenu à <span>notre restaurant</span></h1>
+						<h4>Brasil Burger</h4>
+						<strong><p>⚠️😍🐃
+							Vérifier la qualité de la viande au quotidien est l'un de nos différentiels et nous aimons le faire, peu importe les efforts que cela nous prend.<br>
+							Ce qui compte, c'est de bien le faire tous les jours.<br>
+							⚠️🍔❤<br>
+							Nos clients peuvent faire confiance à notre hygiène et à notre attention avec leurs délicieux Burgers.</p></strong>
+						<a class="btn btn-lg btn-circle btn-outline-new-white" href="{{path('menu')}}">decouvrez</a>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-12">
+					<img src="asset1/images/about-img.jpg" alt="" class="img-fluid">
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End About -->
+	
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

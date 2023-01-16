@@ -1,0 +1,21 @@
+{% extends "base.admin.html.twig" %}
+
+{% block title %}
+    new complement
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5 card shadow mb-5">
+        <h1 class="text-center mb-5 mt-5">Formulaire d'ajout/modification de complement</h1>
+        {{form(form)}}
+        <a class="btn btn-danger col-sm-2 offset-sm-10 mb-5" href="{{ path('liste_complement')}}">annuler</a>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

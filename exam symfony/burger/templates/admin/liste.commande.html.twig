@@ -1,0 +1,88 @@
+{% extends "admin/liste.html.twig" %}
+
+{% block title %}
+    liste des commandes
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+
+    {% block liste_head %}
+        liste des commandes
+    {% endblock %}
+
+    {% block liste_add %}{% endblock %}
+
+    {% block liste_body %}
+        
+        <thead>
+            <tr>
+                <th>numéro de commande</th>
+                <th>Nombre</th>
+                <th>Prix</th>
+                <th>repas</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>numéro de commande</th>
+                <th>Nombre</th>
+                <th>Prix</th>
+                <th>repas</th>
+                <th>Action</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            {% for com in commandes %}
+                <tr id="co{{com.id}}" >
+                    <td>numero {{com.id}}</td>
+                    <td>{{com.nombre}}</td>
+                    <td>{{com.total}}</td>
+                    <td>
+                        {% for panier in com.paniers %}
+                            {{panier.repas.libelle}}<br>
+                        {% endfor %}
+                    </td>
+                    <td>
+                    {% if com.etat != "archivé" %}
+                        <button class="btn btn-danger mr-3 ml-3 del" data-id="{{com.id}}" data-path="{{path("del_com",{id:com.id})}}"><i class="fa fa-trash"></i></button>
+                    {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">la liste des commandes est vide</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+            
+  
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    $(function(){
+        $('.del').on('click', function(){
+            const id=$(this).data('id')
+            const deleted= document.getElementById("co"+id)
+            const path =$(this).data('path')
+            $.ajax({
+                url: path,
+                type: 'GET',
+                async: true,
+                success: function(data){
+                },
+                error: function(xhr, status, error){
+                    deleted.style.display="none"
+                    console.log(xhr, status, error)
+                }
+            });
+        });
+        
+    })
+    </script>
+{% endblock %}

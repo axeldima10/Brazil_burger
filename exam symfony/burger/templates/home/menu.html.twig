@@ -1,0 +1,166 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    menus
+{% endblock %}
+
+{% block body %}
+    <!-- Start All Pages -->
+	<div class="all-page-title page-breadcrumb">
+		<div class="container text-center">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1>Special Menu</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End All Pages -->
+	
+	<!-- Start Menu -->
+	<div class="menu-box">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="heading-title text-center">
+						<h2>Carte repas</h2>
+						<p>parcourez et faites vous plaisir en commandant nos propositions de repas!<br> Cliquez pour ajouter dans votre panier</p>
+						<span class="bg-success text-center" id="message" style="display:none">repas ajouté au panier</span>
+					</div>
+				</div>
+			</div>
+			
+			
+
+			<div class="row inner-menu-box">
+				
+				<div class="col-3">
+					<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+						<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Menus</a>
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Boissons</a>
+						<a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Frites</</a>
+						<a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Burgers</a>
+					</div>
+				</div>
+				
+				<div class="col-9">
+					<div class="tab-content" id="v-pills-tabContent">
+
+                        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+							<div class="row">
+								{% for menu in menus %}
+                                <div class="col-lg-4 col-md-6 special-grid lunch">
+									<div class="gallery-single fix">
+									{% if menu.images.values is empty %}
+										<img src="{{asset('images/1.png')}}" class="img-fluid" alt="Image">
+									{% else %}
+										<img src="{{asset('images/menu/')}}{{menu.images.values[0].libelle}}" class="img-fluid" alt="Image" style="width:300px; height:250px">
+									{% endif %}
+										<div class="why-text">
+											<h4><button data-id="{{menu.getId1()}}" data-path="{{path('cart',{'id':menu.getId1()})}}" class="btn btn-primary select">{{menu.libelle}}</button></h4>
+											<p>{{menu.description}}</p>
+											<h5>{{menu.prix}} FCFA</h5>
+										</div>
+									</div>
+								</div>
+                                {% endfor %}
+                            </div>	
+						</div>
+
+						<div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+							<div class="row">
+								{% for boisson in boissons %}
+                                <div class="col-lg-4 col-md-6 special-grid drinks">
+									<div class="gallery-single fix">
+									{% if boisson.images.values is empty %}
+										<img src="{{asset('images/1.png')}}" class="img-fluid" alt="Image">
+									{% else %}
+										<img src="{{asset('images/boisson/')}}{{boisson.images.values[0].libelle}}" class="img-fluid" alt="Image" style="width:300px; height:250px">
+									{% endif %}
+										<div class="why-text">
+											<h4><button data-id="{{boisson.getId1()}}" data-path="{{path('cart',{'id':boisson.getId1()})}}" class="btn btn-primary select">{{boisson.libelle}}</button></h4>
+											<p>{{boisson.description}}</p>
+											<h5>{{boisson.prix}} FCFA</h5>
+										</div>
+									</div>
+								</div>
+                                {% endfor %}
+							</div>	
+						</div>
+
+						<div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+							<div class="row">
+                                {% for frite in frites %}
+                                <div class="col-lg-4 col-md-6 special-grid lunch">
+									<div class="gallery-single fix">
+									{% if frite.images.values is empty %}
+										<img src="{{asset('images/1.png')}}" class="img-fluid" alt="Image">
+									{% else %}
+										<img src="{{asset('images/frites/')}}{{frite.images.values[0].libelle}}" class="img-fluid" alt="Image" style="width:300px; height:250px">
+									{% endif %}
+										<div class="why-text">
+											<h4><button data-id="{{frite.getId1()}}" data-path="{{path('cart',{'id':frite.getId1()})}}" class="btn btn-primary select">{{frite.libelle}}</button></h4>
+											<p>{{frite.description}}</p>
+											<h5>{{frite.prix}} FCFA</h5>
+										</div>
+									</div>
+								</div>
+                                {% endfor %}
+							</div>
+						</div>
+
+						<div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+							<div class="row">
+								{% for burger in burgers %}
+                                <div class="col-lg-4 col-md-6 special-grid dinner">
+									<div class="gallery-single fix">
+									{% if burger.images.values is empty %}
+										<img src="{{asset('images/1.png')}}" class="img-fluid" alt="Image">
+									{% else %}
+										<img src="{{asset('images/burger/')}}{{burger.images.values[0].libelle}}" class="img-fluid" alt="Image" style="width:300px; height:250px">
+									{% endif %}
+										<div class="why-text">
+											<h4><button data-id="{{burger.getId1()}}" data-path="{{path('cart',{'id':burger.getId1()})}}" class="btn btn-primary select">{{burger.libelle}}</button></h4>
+											<p>{{burger.description}}</p>
+											<h5>{{burger.prix}} FCFA</h5>
+										</div>
+									</div>
+								</div>
+                                {% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Menu -->
+	
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    $(function(){
+        $('.select').on('click', function(){
+			const mess=document.getElementById("message")
+            const id=$(this).data('id')
+            const path =$(this).data('path')
+			let value=parseInt(document.getElementById("panier").innerText)
+            $.ajax({
+                url: path,
+                type: 'GET',
+                async: true,
+                success: function(data){
+					document.getElementById("panier").innerText= value+1
+					$("#message").show("slow").delay(5000).hide("slow");
+                },
+                error: function(xhr, status, error){
+                    //console.log(xhr, status, error)
+                }
+            });
+        });
+        
+    })
+    </script>
+{% endblock %}

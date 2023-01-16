@@ -1,0 +1,90 @@
+{% extends "admin/liste.html.twig" %}
+
+{% block title %}
+    liste des boissons
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+
+    {% block liste_head %}
+        liste des boissons
+    {% endblock %}
+
+    {% block liste_add %}
+        <a href="{{path("add_boisson",{id:0})}}" class="btn btn-primary"><i class="fa fa-plus"></i> new boisson</a>
+    {% endblock %}
+
+    {% block liste_body %}
+        
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prix</th>
+                <th>disponibilite</th>
+                <th>description</th>
+                <th>Image</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Nom</th>
+                <th>Prix</th>
+                <th>disponibilite</th>
+                <th>description</th>
+                <th>Image</th>
+                <th>Action</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            {% for boisson in boissons %}
+                <tr id="bo{{boisson.getId1()}}" >
+                    <td>{{boisson.libelle}}</td>
+                    <td>{{boisson.prix}}</td>
+                    <td>{{boisson.disponibilite ? "disponible" : "rupture de stock"}}</td>
+                    <td>{{boisson.description}}</td>
+                    {% if boisson.images.values is empty %}
+                        <td></td>
+                    {% else %}
+                        <td><img src="{{asset("images/boisson/")}}{{boisson.images.values[0].libelle}}" alt="" style="width:50px" /></td>
+                    {% endif %}
+                    <td><button class="btn btn-danger mr-3 ml-3 del" data-id="{{boisson.getId1()}}" data-path="{{path("del_boisson",{id:boisson.getId1()})}}"><i class="fa fa-trash"></i></button>
+                        <a class="btn btn-warning" href="{{path("add_boisson",{id:boisson.getId1()})}}"><i class="fa fa-edit"></i></a></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">la liste des boissons est vide</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+            
+  
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    $(function(){
+        $('.del').on('click', function(){
+            const id=$(this).data('id')
+            const deleted= document.getElementById("bo"+id)
+            const path =$(this).data('path')
+            $.ajax({
+                url: path,
+                type: 'GET',
+                async: true,
+                success: function(data){
+                },
+                error: function(xhr, status, error){
+                    deleted.style.display="none"
+                    console.log(xhr, status, error)
+                }
+            });
+        });
+        
+    })
+    </script>
+{% endblock %}
