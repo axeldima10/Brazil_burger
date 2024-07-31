@@ -1,7 +1,7 @@
 # Projet Fil Rouge : Gestion Commande dans un Restaurant
 
 ## Description
-Ce projet consiste en une application web et mobile pour le Restaurant Brasil Burger, spécialisée dans la gestion des commandes et des livraisons de burgers. L'application permet aux gestionnaires et aux clients de gérer les commandes efficacement.
+Ce projet consiste en une application web pour la gestion des commandes et des livraisons de burgers. L'application permet aux gestionnaires et aux clients de gérer les commandes efficacement.
 
 ## Fonctionnalités
 
